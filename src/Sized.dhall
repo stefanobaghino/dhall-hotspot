@@ -21,6 +21,7 @@ let HotSpot =
           , MaxPermSize = sized "MaxPermSize"
           , NewSize = sized "NewSize"
           , ReservedCodeCacheSize = sized "ReservedCodeCacheSize"
+          , MetaspaceSize = sized "MetaspaceSize"
           }
 
 let example =
