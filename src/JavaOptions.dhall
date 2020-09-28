@@ -57,23 +57,14 @@ let example4 =
 let example5 =
         assert
       :   show
-            [ Flag (HotSpot.UseSpinning True)
-            , Integral (HotSpot.PreBlockSpin 16)
-            ]
-        ≡ "-XX:+UseSpinning -XX:PreBlockSpin=16"
-
-let example6 =
-        assert
-      :   show
-            [ Flag (HotSpot.UseSpinning True)
-            , Integral (HotSpot.PreBlockSpin 16)
-            , SystemProperty { key = "user.dir", value = "/home/user" }
-            , Flag (HotSpot.UseConcMarkSweepGC True)
+            [ Flag (HotSpot.UseParallelGC True)
+            , Integral (HotSpot.ParallelGCThreads 2)
+            , SystemProperty { key = "user.dir", value = "." }
             , Short (HotSpot.Xss (Size.Type.M 8))
             , Short (HotSpot.Xms (Size.Type.G 4))
             , Short (HotSpot.Xmx (Size.Type.G 8))
             ]
-        ≡ "-XX:+UseSpinning -XX:PreBlockSpin=16 -Duser.dir=/home/user -XX:+UseConcMarkSweepGC -Xss8m -Xms4g -Xmx8g"
+        ≡ "-XX:+UseParallelGC -XX:ParallelGCThreads=2 -Duser.dir=. -Xss8m -Xms4g -Xmx8g"
 
 let example6 =
         assert
@@ -82,9 +73,9 @@ let example6 =
             , Decimal (HotSpot.MinRAMPercentage 15.0)
             , Decimal (HotSpot.MaxRAMPercentage 75.0)
             , Flag (HotSpot.UseG1GC True)
-            , Sized (HotSpot.G1HeapRegionSize (Size.Type.M 64))
+            , Sized (HotSpot.G1HeapRegionSize (Size.Type.M 16))
             ]
-        ≡ "-XX:InitialRAMPercentage=25.0 -XX:MinRAMPercentage=15.0 -XX:MaxRAMPercentage=75.0 -XX:+UseG1GC -XX:G1HeapRegionSize=64m"
+        ≡ "-XX:InitialRAMPercentage=25.0 -XX:MinRAMPercentage=15.0 -XX:MaxRAMPercentage=75.0 -XX:+UseG1GC -XX:G1HeapRegionSize=16m"
 
 in  { Type = JavaOptions
     , Size = Size.Type
