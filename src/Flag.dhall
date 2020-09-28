@@ -1,15 +1,17 @@
+let KeyValue = ./KeyValue.dhall
+
 let Flag
     : Type
-    = { key : Text, value : Bool }
+    = KeyValue.Type Bool
 
 let show
     : Flag → Text
     = λ(f : Flag) → "-XX:" ++ (if f.value then "+" else "-") ++ f.key
 
-let XX =
+let HotSpot =
       let flag
           : Text → Bool → Flag
-          = λ(key : Text) → λ(value : Bool) → { key, value }
+          = KeyValue.make Bool
 
       in  { AllowUserSignalHandlers = flag "AllowUserSignalHandlers"
           , DisableExplicitGC = flag "DisableExplicitGC"
@@ -65,10 +67,12 @@ let XX =
 
 let exampleTrue =
         assert
-      : show (XX.AllowUserSignalHandlers True) ≡ "-XX:+AllowUserSignalHandlers"
+      :   show (HotSpot.AllowUserSignalHandlers True)
+        ≡ "-XX:+AllowUserSignalHandlers"
 
 let exampleFalse =
         assert
-      : show (XX.AllowUserSignalHandlers False) ≡ "-XX:-AllowUserSignalHandlers"
+      :   show (HotSpot.AllowUserSignalHandlers False)
+        ≡ "-XX:-AllowUserSignalHandlers"
 
-in  { Type = Flag, show, XX }
+in  { Type = Flag, show, HotSpot }
